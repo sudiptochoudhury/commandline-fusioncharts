@@ -131,7 +131,7 @@ A small example XML:
 
 
 ## Author
-[**Sudipto Chudhury**](example@example.com)
+[**Sudipto Chudhury**](email:mail@sudipto.com)
 
 
 ## License
