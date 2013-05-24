@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<!--
+  FusionCharts Chart Generator HTML Application (prototype)
+  
+  This application parses XML to retrieve Applicaiton configurations,
+  chart configurations and chart data. It communicates with 
+  PhantomJS Application (control.js) and renders charts
+  
+  Using FusionCharts Suite XT (<http://www.fusioncharts.com/>)
+ 
+ -->
+<html>
+    <head>
+        <script type="text/javascript" src="jquery.min.js"></script>
+        <script type="text/javascript" src="FusionCharts.js"></script>
+        <style type="text/css">
+			
+			/* Remove default padding and margin of page */
+            body {
+                margin: 0;
+                padding: 0;
+            }
+			
+			/* As a fix to PhantomJS behavior that adds some space below chart
+			 * the styles below are applied to display the chart containers 
+			 * using absolute positioning.
+			 */
+			#wrapper {
+				position: relative;
+			}
+			.fc-container {
+				position: absolute;
+				left: 0;
+			}
+         </style>
+         <script type="text/javascript">
+			
+			/**
+			 * JavaScript code relate to rendering of charts
+		     */
+
+			// Event listener to check when FusionCharts and page is ready
+			// to render charts.
+            FusionCharts.addEventListener("ready", function(evt, arg) {
+                
+                var xmlString, 
+                    xmlDoc, 
+                    $xml, 
+                    appConfig,
+                    vizCollection,
+                    vizDef,
+					chartXML,
+					chartConfig = {},
+                    chartData,
+                    chartType,
+                    chartId,
+                    chartContainer,
+                    chartWidth,
+                    chartHeight,
+					chartTop = 0,
+                    yGutter = 0,
+                    xGutter = 0,
+					chartContainerCount = 0,
+                    renderCompleteCount = 0,
+					renderAt,
+                    totalCharts;
+
+				// Check if PhantomJS interface is available
+                if (typeof window.callPhantom === 'function') {
+				
+					// Notify PhantomJS Application (control.js) that 
+					// the page is ready to render charts
+					// through the `ready` property.
+					//
+					// PhantomJS returns back the Application XML (as string)
+					// that contains Application configurations,
+					// chart configurations and chart data
+                    xmlString = window.callPhantom({ ready: true });
+					
+					// Convert XML string to XML Document
+                    xmlDoc = jQuery.parseXML(xmlString);
+					// Convert XML Document to jQuery object for easy parsing
+                    $xml = jQuery(xmlDoc);
+
+					// Retrieves all attributes (Application configurations) 
+					// of `app` node
+                    appConfig = $xml.find('app').getAttributes();
+
+                    // Pass Application configurations to PhantomJS Application
+                    window.callPhantom({ 'appConfig': true, 'config': appConfig }); 
+					
+					// Retrieve all `visualization` nodes from XML
+					// Each `visualization` node contains chart configurations
+					// and chart XML data (as per FusionCharts XML format) in `chart' node
+                    vizCollection = $xml.find('visualization');
+					
+					// Count the total number of charts
+                    totalCharts = vizCollection.length;
+					
+					// Listen to `rendered` event of each chart
+					// This event listener notifies PhantomJS Application
+					// that a chart has been rendered
+					FusionCharts.addEventListener('rendered', function (evt, arg) {
+					
+						// Chart configurations
+						var chart = evt.sender,
+							id = chart.id, // chart id
+							chartOffset = jQuery("#"+id).offset(), // chart coordinates
+							top = chartOffset.top, // chart top position
+							left = chartOffset.left, // chart left position
+							width = chart.width, // chart width
+							height = chart.height; // chart height
+							
+						// One more chart has finished rendering	
+						renderCompleteCount++;
+						// Notify PhantomJS Application that the chart has been rendered.
+						// It can now capture the image of the chart.
+						window.callPhantom({ 
+							'rendered': true, 
+							'chart': chart,
+							
+							// The output filename of the image
+							'saveAs': chartConfig[id].output, 
+							
+							// Chart's rectangular coordinates with respect to page
+							// TO be used by PhantomJS Application to capture image
+							'clipRect': { 
+								top: top, 
+								left: left, 
+								width: width, 
+								height: height 
+							},								
+							
+							// `allRendered` is set to true when all charts has finished rendering.
+							// This is a flag that asks PhantomJS Application to exit
+							// as no more action is required.
+							'allRendered': renderCompleteCount == totalCharts  
+						}); 
+
+
+					});
+
+					// Iterate through each chart
+                    vizCollection.each(function() {
+	
+						// One more chart
+						chartContainerCount++;
+						
+						// convert each `visualization` Node to 
+						// jQuery object for easy access
+                        vizDef = $(this);
+						
+						/* Retrieve chart configurations */
+						// Chart type
+                        chartType = vizDef.attr('type');
+						// Chart width
+                        chartWidth = vizDef.attr('width');
+						// Chart height
+                        chartHeight = vizDef.attr('height');
+						
+						// Chart XML Data
+						chartXML = vizDef.find('chart, map, graph');
+						
+						// Disable animation
+						jQuery(chartXML).attr('animation', 0);
+						
+						// Chart XML data as string from `chart' node
+                        chartData = $('<div style="display: none;">').append(chartXML).html();
+						
+                        // Define the id for chart and chart's container
+						renderAt = "chart-container-" + (chartContainerCount);
+						chartId = "chart-id-" + (chartContainerCount);
+
+						
+						// Chart output filename where the captured image will be stored
+						chartConfig[chartId] = chartConfig[chartId] || {};
+                        chartConfig[chartId].output = vizDef.attr('outputFilename');
+						
+						// Inject dynamic chart containter (DIV element) in HTML
+						// The DIV is set with class name `fc-container` to apply common style
+						// The DIV id is set
+						// The DIV is set with a calculated `top` style 
+						jQuery("#wrapper").append(
+							"<div class='fc-container' id='" + 
+							renderAt + 
+							"' style='top: " + chartTop + "px;' />"
+						);
+						// Calculate abolute position of the next container
+						chartTop += parseInt(chartHeight) + yGutter;
+						
+						// Render chart
+                        FusionCharts.render({
+                            type: chartType,
+                            width: chartWidth,
+                            height: chartHeight,
+                            dataSource: chartData,
+                            dataFormat: 'xml',
+                            id: chartId,
+                            renderAt: renderAt
+                        });
+
+                    });
+                }
+            });
+			
+			// Extend jQuery to convert XML Attributes into Object
+            (function($) {
+                $.fn.getAttributes = function() {
+                    var attributes = {}; 
+
+                    if (this.length) {
+                        $.each(this[0].attributes, function(index, attr) {
+                            attributes[attr.name] = attr.value;
+                        }); 
+                    }
+
+                    return attributes;
+                };
+            })(jQuery);
+
+
+         </script>
+
+    </head>
+    <body>
+        <div id="wrapper">
+        </div>
+    </body>
+</html>
