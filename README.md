@@ -1,8 +1,9 @@
 commandline-fusioncharts
 ========================
-![commandline-fusioncharts-logo](http://www.sudipto.net/play/develop/phantomjs/commandline-fusioncharts/logo.jpg)
 
-> Shell-command FusionCharts to render as image (using PhantomJS)  
+![commandline-fusioncharts-logo](phantomJSFC.jpg)
+
+> Shell-command FusionCharts to render as image (using PhantomJS), *bye bye Web Browser!*
 
 ========
 
