@@ -80,13 +80,13 @@ A small example XML:
 
 1. `<app>` is the root node
 2. `<app>` may have the following configuring attributes:
-      a. `outputType` - Image format (it can be `jpg`, `png`, or `gif`, default is `jpg`)
-      b. `outputFolder` - Path where output files will be stored, make sure to add a '/' at the end. If not specified, all output files will be stored in the the folder where the application is running)
-      c. `captureDelayMs` - A minimum delay in milliseconds is required for JavaScript to breath (default is `300`)
-      d. `zoom` - It the magnification factor as number. Default is `1` which means `100%`. Thus, `0.1` will reduce the image to `10%` whereas `10` will magnify the image `10 times` the original.
+      1. `outputType` - Image format (it can be `jpg`, `png`, or `gif`, default is `jpg`)
+      2. `outputFolder` - Path where output files will be stored, make sure to add a `/` at the end. If not specified, all output files will be stored in the the folder where the application is running)
+      3. `captureDelayMs` - A minimum delay in milliseconds is required for JavaScript to breath (default is `300`)
+      4. `zoom` - It the magnification factor as number. Default is `1` which means `100%`. Thus, `0.1` will reduce the image to `10%` whereas `10` will magnify the image `10 times` the original.
 
 3. Each chart is defined through `<visualization>` node, where this node need the following attributes: 
-    a. `type` - Chart type, as per FusionCharts JavaScript Alias of charts, maps ans gauges present in  FusionCharts XT[^1], FusionWidgets XT [^2], PowerCharts XT [^3] and FusionMaps XT [^4]
+    1. `type` - Chart type, as per FusionCharts JavaScript Alias of charts, maps ans gauges present in  FusionCharts XT[^1], FusionWidgets XT [^2], PowerCharts XT [^3] and FusionMaps XT [^4]
     
 [^1]: http://docs.fusioncharts.com/charts/?Introduction/ChartList.html
 
@@ -96,10 +96,10 @@ A small example XML:
 
 [^4]: http://docs.fusioncharts.com/maps/?introduction/MapsList.html)
         
-    b. `width` - in pixels without 'px' suffix)
-    c. `height` - in pixels without 'px' suffix)
-    d. `output`  - File name (without the extension)
-
+    2. `width` - in pixels without 'px' suffix
+    3. `height` - in pixels without 'px' suffix
+    4. `output`  - File name (without the extension)
+ 
 
 4. A `<visualization>` node must have a single `<chart>` or `<map>` node. This `<chart>` or `<map>` contains the data for the chart, map or gauge as per standard [FusionCharts XML specifications](http://docs.fusioncharts.com/) for the particular chart, map or gauge.
 
