@@ -80,32 +80,36 @@ A small example XML:
 
 1. `<app>` is the root node
 2. `<app>` may have the following configuring attributes:
-      a) `outputType` - Image format (it can be `jpg`, `png`, or `gif`, default is `jpg`)
-      b) `outputFolder` - Path where output files will be stored, make sure to add a '/' at the end. If not specified, all output files will be stored in the the folder where the application is running)
-      c) `captureDelayMs` - A minimum delay in milliseconds is required for JavaScript to breath (default is `300`)
-      d) `zoom` - It the magnification factor as number. Default is `1` which means `100%`. Thus, `0.1` will reduce the image to `10%` whereas `10` will magnify the image `10 times` the original.
+      a. `outputType` - Image format (it can be `jpg`, `png`, or `gif`, default is `jpg`)
+      b. `outputFolder` - Path where output files will be stored, make sure to add a '/' at the end. If not specified, all output files will be stored in the the folder where the application is running)
+      c. `captureDelayMs` - A minimum delay in milliseconds is required for JavaScript to breath (default is `300`)
+      d. `zoom` - It the magnification factor as number. Default is `1` which means `100%`. Thus, `0.1` will reduce the image to `10%` whereas `10` will magnify the image `10 times` the original.
 
 3. Each chart is defined through `<visualization>` node, where this node need the following attributes: 
-    a) `type` - Chart type, as per FusionCharts JavaScript Alias[^1][^2][^3][^4] 
-    [^1]: http://docs.fusioncharts.com/charts/?Introduction/ChartList.html
-    [^2]: http://docs.fusioncharts.com/widgets/?Introduction/ChartList.html
-    [^3]: http://docs.fusioncharts.com/powercharts/?Introduction/ChartList.html
-    [^4]: http://docs.fusioncharts.com/maps/?introduction/MapsList.html)
+    a. `type` - Chart type, as per FusionCharts JavaScript Alias of charts, maps ans gauges present in  FusionCharts XT[^1], FusionWidgets XT [^2], PowerCharts XT [^3] and FusionMaps XT [^4]
+    
+[^1]: http://docs.fusioncharts.com/charts/?Introduction/ChartList.html
+
+[^2]: http://docs.fusioncharts.com/widgets/?Introduction/ChartList.html
+
+[^3]: http://docs.fusioncharts.com/powercharts/?Introduction/ChartList.html
+
+[^4]: http://docs.fusioncharts.com/maps/?introduction/MapsList.html)
         
-    b) `width` - in pixels without 'px' suffix)
-    c) `height` - in pixels without 'px' suffix)
-    d) `output`  - File name (without the extension)
+    b. `width` - in pixels without 'px' suffix)
+    c. `height` - in pixels without 'px' suffix)
+    d. `output`  - File name (without the extension)
 
 
-4. A `<visualization>` node must have a single `<chart>` or `<map>` node. This `<chart>` or `<map>` contains the data for the chart/map/gauge as per standard FusionCharts XML specs for the particular chart/map/gauge.
+4. A `<visualization>` node must have a single `<chart>` or `<map>` node. This `<chart>` or `<map>` contains the data for the chart, map or gauge as per standard [FusionCharts XML specifications](http://docs.fusioncharts.com/) for the particular chart, map or gauge.
+
+
+====
 
 ## Works on 
 1. Microsoft Windows 
 2. Apple Mac OS X
 3. Linux
-
-
-
 
 
 ## Limitations
@@ -120,9 +124,12 @@ A small example XML:
 8. Can be set to work as a standalone export server 
 9. Pretty soon phantomJS v2 will arrive with more robust webkit and more features
 
+====
 
 ## Version
 * v0.0.9.2 - 2013-05-24
+
+=====
 
 ## Author
 ** [Sudipto Chudhury](example@example.com)**
