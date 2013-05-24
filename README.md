@@ -104,7 +104,6 @@ A small example XML:
 4. A `<visualization>` node must have a single `<chart>` or `<map>` node. This `<chart>` or `<map>` contains the data for the chart, map or gauge as per standard [FusionCharts XML specifications](http://docs.fusioncharts.com/) for the particular chart, map or gauge.
 
 
-====
 
 ## Works on 
 1. Microsoft Windows 
@@ -124,12 +123,11 @@ A small example XML:
 8. Can be set to work as a standalone export server 
 9. Pretty soon phantomJS v2 will arrive with more robust webkit and more features
 
-====
 
 ## Version
 * v0.0.9.2 - 2013-05-24
 
-=====
+
 
 ## Author
 [**Sudipto Chudhury**](example@example.com)
